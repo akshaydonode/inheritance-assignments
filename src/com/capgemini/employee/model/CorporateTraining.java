@@ -1,6 +1,4 @@
-package com.capgemini.employee.test;
-
-import com.capgemini.employee.model.Training;
+package com.capgemini.employee.model;
 
 public class CorporateTraining extends Training {
 

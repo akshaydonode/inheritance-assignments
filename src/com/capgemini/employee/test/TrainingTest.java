@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
 
+import com.capgemini.employee.model.CorporateTraining;
 import com.capgemini.employee.model.PublicTraining;
 import com.capgemini.employee.model.Training;
 
