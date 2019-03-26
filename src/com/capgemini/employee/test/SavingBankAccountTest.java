@@ -1,35 +1,72 @@
 package com.capgemini.employee.test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
+import com.capgemini.employee.model.BankAccount;
 import com.capgemini.employee.model.SavingBankAccount;
 
 public class SavingBankAccountTest {
-
-	private SavingBankAccount savingAccount;
-	@BeforeEach
-	public void setUp()  {
-		savingAccount = new SavingBankAccount(111,"AMD","SAVING",20000);
-	}
-
-	@Test
-	public void testMoneyIsDeposited() {
-		savingAccount = new SavingBankAccount(111,"AMD","SAVING",20000);
-		assertEquals(25000, savingAccount.deposit(5000));
-		
+private BankAccount account;
+	
+	@Before
+	public void setUp()
+	{
+		account = new SavingBankAccount(101, "John Doe", "SAVING", 45000, true);
 	}
 	
 	@Test
-	public void testWithdrawMoneyForSuficientBalance() {
-		assertEquals(10000, savingAccount.withdraw(10000));
+	public void testSavingBankAccountObjectIsCreated()
+	{
+		BankAccount account = new SavingBankAccount();
+		assertNotNull(account);
+	}
+	
+	@Test
+	public void testSavingBankAccountObjectIsCreatedWithParameterized()
+	{
+		BankAccount account = new SavingBankAccount(101, "John Doe", "SAVING", 45000, true);
+		assertEquals(101, account.getAccountId());
+		assertEquals("John Doe", account.getAccountHolderName());
+		assertEquals("SAVING", account.getAccountType());
+		assertEquals(45000, account.getAccountBalance(),0.01);
+		assertEquals(true, ((SavingBankAccount) account).isSalaryAccount());
+	}
+	
+	@Test
+	public void testSavingBankAccountWithdrawWithSalaryAccount()
+	{
+		assertEquals(500, account.withdraw(44500),0.01);
+	}
+	
+	@Test
+	public void testSavingBankAccountWithdrawWithSalaryAccountWithInsufficientFund()
+	{
+		assertEquals(45000, account.withdraw(45001),0.01);
+	}
+	
+	@Test
+	public void testSavingBankAccountWithdrawWithNormalAccount()
+	{
+		BankAccount account = new SavingBankAccount(101, "John Doe", "SAVING", 45000, false);
+		assertEquals(1200, account.withdraw(43800),0.01);
 	}
 
 	@Test
-	public void testWithdrawMoneyForInsuficientBalanceORExceedWithdrawLimit() {
-		String expected="You don't have sufficient fund";
-		assertEquals(20000, savingAccount.withdraw(16000));
+	public void testSavingBankAccountWithdrawWithNormalAccountWithInsufficientFund()
+	{
+		BankAccount account = new SavingBankAccount(101, "John Doe", "SAVING", 45000, false);
+		assertEquals(45000, account.withdraw(44100),0.01);
 	}
+	
+	@Test
+	public void testSavingBankAccountDeposit()
+	{
+		BankAccount account = new SavingBankAccount(101, "John Doe", "SAVING", 45000, false);
+		assertEquals(90000, account.deposit(45000),0.01);
+	}
+
 }
